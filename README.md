@@ -1,8 +1,9 @@
 # PySide6_demo
 Calling API to show Line Chart
-Pyside6_demo v0.1.1
-Launch the API program in your terminal.
-After launching, execute the program by pressing the 'Load Data' button.
+
+Pyside6_demo v0.1.1  
+Launch the API program in your terminal.  
+After launching, execute the program by pressing the 'Load Data' button.  
 ---------------------------------
 ## Base URL
 `http://{host}[:{port}]/api/{version}`
