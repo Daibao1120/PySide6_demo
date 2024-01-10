@@ -2,9 +2,10 @@ import sys
 import requests
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from PySide6.QtWidgets import (QApplication, QMainWindow, QVBoxLayout,
-                               QWidget, QPushButton, QTextEdit, QCheckBox, QFormLayout, QHBoxLayout)
-from PySide6.QtCore import Qt, QDate
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QVBoxLayout,
+                             QWidget, QPushButton, QTextEdit, QCheckBox, QFormLayout, QHBoxLayout,
+                             QDateEdit, QLabel)
+from PyQt5.QtCore import Qt, QDate
 from datetime import datetime
 
 
@@ -33,7 +34,8 @@ class DataVisualizer(QMainWindow):
         left_vLayout = QVBoxLayout(left_container)
 
         # 折線圖畫布
-        self.canvas = CustomMatplotlibCanvas(self, width=5, height=10, dpi=100)
+        self.canvas = CustomMatplotlibCanvas(
+            self.main_widget, width=5, height=10, dpi=100)
         left_vLayout.addWidget(self.canvas)
         left_vLayout.setAlignment(Qt.AlignTop)
 
@@ -118,6 +120,8 @@ class DataVisualizer(QMainWindow):
 
         for key in selected_keys:
             if key in self.collecteds_data:
+                if 'x_axis_labels' not in self.collecteds_data[key].keys():
+                    continue
                 dates = [datetime.strptime(d, "%Y/%m/%d %H:%M:%S.%f")
                          for d in self.collecteds_data[key]['x_axis_labels']]
                 values = self.collecteds_data[key]['y_axis_labels']
