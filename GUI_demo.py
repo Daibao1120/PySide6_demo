@@ -127,6 +127,13 @@ class DataVisualizer(QMainWindow):
 
                 self.canvas.ax.plot(dates, values, label=f"{key} Data")
 
+                detection = self.detections.get(key, {})  # alarm line
+                if 'max' in detection and detection['max']['condition'] == 'below':
+                    self.canvas.ax.axhline(
+                        y=detection['max']['threshold'], color='purple', linestyle='-.', linewidth=2, label=f'{key} Max')
+                if 'min' in detection and detection['min']['condition'] == 'above':
+                    self.canvas.ax.axhline(
+                        y=detection['min']['threshold'], color='cyan', linestyle='-.', linewidth=2, label=f'{key} Min')
                 for date, value in zip(dates, values):
                     detection = self.detections.get(key, {})
                     if (('max' in detection and detection['max']['condition'] == 'below' and value > detection['max']['threshold']) or
@@ -135,10 +142,11 @@ class DataVisualizer(QMainWindow):
                         alert_values.append(
                             (key, date.strftime("%Y/%m/%d %H:%M:%S"), value))
 
-        self.canvas.ax.legend()
+        self.canvas.ax.legend(bbox_to_anchor=(1.05, 1.0), loc="upper left")
         self.canvas.ax.set_xlabel("Date and Time")
         self.canvas.ax.set_ylabel("Value")
         self.canvas.ax.grid(True)
+        self.canvas.fig.tight_layout()
         self.canvas.draw()
 
         alert_text = "Alert Values:\n" + \
